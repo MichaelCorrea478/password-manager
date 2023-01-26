@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateFolderRequest;
 use App\Http\Requests\UpdateFolderRequest;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Resources\FolderResource;
 use App\Models\Folder;
 use Illuminate\Http\Request;
 use Flash;
@@ -21,11 +22,14 @@ class FolderController extends AppBaseController
      */
     public function index(Request $request)
     {
-        /** @var Folder $folders */
-        $folders = Folder::all();
+        return view('folders.index');
+    }
 
-        return view('folders.index')
-            ->with('folders', $folders);
+    public function getFolders()
+    {
+        return FolderResource::collection(
+            Folder::all()
+        );
     }
 
     /**

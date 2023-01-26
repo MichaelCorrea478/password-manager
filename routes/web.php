@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FolderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,8 +22,16 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::group([
+    'prefix' => 'folders',
+    'middleware' => ['auth']
+], function() {
+    Route::get('/', [FolderController::class, 'index'])->name('folders.index');
+    Route::get('/{folder}', [FolderController::class, 'show'])->name('folders.show');
+    Route::get('/fetch', [FolderController::class, 'getFolders'])->name('folders.fetch');
+});
 
-Route::resource('folders', App\Http\Controllers\FolderController::class);
+
 
 
 Route::resource('passwords', App\Http\Controllers\PasswordController::class);
